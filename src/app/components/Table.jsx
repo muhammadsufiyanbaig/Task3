@@ -46,7 +46,7 @@ const Table = () => {
     return <p className="text-red-600">Error: {error}</p>;
   }
 
-  // console.log(data[0]);
+  console.log(data[0]);
 
   return (
     <div>
@@ -57,31 +57,31 @@ const Table = () => {
               <th scope="col" className="px-6 py-3">
                 #
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 Product name
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 Price
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 1h%
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 24h%
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 7d%
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 Market Cap
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 Volume(24h)
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 Circulating Supply
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 Last 7 Days
               </th>
             </tr>
@@ -90,11 +90,11 @@ const Table = () => {
             <>
               <tbody>
                 <tr className="bg-white border-b border-t  hover:bg-gray-50">
-                  <td className="px-6 py-4">{item.market_cap_rank}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 cursor-pointer">{item.market_cap_rank}</td>
+                  <td className="px-6 py-4 cursor-pointer">
                     <div className="flex gap-x-2">
                       <Image
-                      className="w-6 h-6 rounded-full"
+                      className="w-6 h-6 rounded-full cursor-pointer"
                         alt="pic"
                         src={item.image}
                         loading="lazy"
@@ -102,17 +102,19 @@ const Table = () => {
                         height={50}
                       />
                       <p>{item.name}</p>
-                      <p className="uppercase">{item.symbol}</p>
+                      <p className="uppercase cursor-pointer">{item.symbol}</p>
                     </div>
                   </td>
-                  <td className="px-6 py-4">${item.current_price}</td>
-                  <td className="px-6 py-4">+0.01%</td>
-                  <td className="px-6 py-4">+0.01%</td>
-                  <td className="px-6 py-4">+0.01%</td>
-                  <td className="px-6 py-4">{item.market_cap}</td>
-                  <td className="px-6 py-4">Silver</td>
-                  <td className="px-6 py-4">${item.circulating_supply}</td>
-                  <td className="px-6 py-4">Chart</td>
+                  <td className="px-6 py-4 cursor-pointer">${item.current_price}</td>
+                  <td className="px-6 py-4 cursor-pointer">+0.01%</td>
+                  <td className="px-6 py-4 cursor-pointer">+0.01%</td>
+                  <td className="px-6 py-4 cursor-pointer">+0.01%</td>
+                  <td className="px-6 py-4 cursor-pointer">${item.market_cap}</td>
+                  <td className="px-6 py-4 cursor-pointer">
+                    ${item.sparkline_in_7d.price[0]}
+                  </td>
+                  <td className="px-6 py-4 cursor-pointer">${item.circulating_supply}</td>
+                  <td className="px-6 py-4 cursor-pointer">Chart</td>
                 </tr>
               </tbody>
             </>
