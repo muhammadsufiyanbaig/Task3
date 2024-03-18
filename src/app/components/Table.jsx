@@ -22,7 +22,7 @@ const Table = () => {
   const handleSortByPrice = () => {
     const sortedData = [...data];
     sortedData.sort((a, b) => {
-      return sortOrder === sortOrder
+      return sortOrder === "asc"
         ? a.current_price - b.current_price
         : b.current_price - a.current_price;
     });
@@ -34,7 +34,7 @@ const Table = () => {
   const handleSortByMarketCap = () => {
     const sortedData = [...data];
     sortedData.sort((a, b) => {
-      return sortOrder === sortOrder
+      return sortOrder === "asc"
         ? a.market_cap - b.market_cap
         : b.market_cap - a.market_cap;
     });
@@ -45,7 +45,7 @@ const Table = () => {
   const handleSortByCirculatingSupply = () => {
     const sortedData = [...data];
     sortedData.sort((a, b) => {
-      return sortOrder === sortOrder
+      return sortOrder === "asc"
         ? a.circulating_supply - b.circulating_supply
         : b.circulating_supply - a.circulating_supply;
     });
@@ -81,14 +81,14 @@ const Table = () => {
               <th scope="col" className="px-6 py-3">
                 #
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 cursor-pointer"
-               
-              >
+              <th scope="col" className="px-6 py-3 cursor-pointer">
                 Product name
               </th>
-              <th  onClick={handleSortByPrice} scope="col" className="px-6 py-3 cursor-pointer">
+              <th
+                onClick={handleSortByPrice}
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+              >
                 Price
               </th>
               <th scope="col" className="px-6 py-3 cursor-pointer">
@@ -100,13 +100,21 @@ const Table = () => {
               <th scope="col" className="px-6 py-3 cursor-pointer">
                 7d%
               </th>
-              <th onClick={handleSortByMarketCap} scope="col" className="px-6 py-3 cursor-pointer">
+              <th
+                onClick={handleSortByMarketCap}
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+              >
                 Market Cap
               </th>
               <th scope="col" className="px-6 py-3 cursor-pointer">
                 Volume(24h)
               </th>
-              <th onClick={handleSortByCirculatingSupply} scope="col" className="px-6 py-3 cursor-pointer">
+              <th
+                onClick={handleSortByCirculatingSupply}
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+              >
                 Circulating Supply
               </th>
               <th scope="col" className="px-6 py-3 cursor-pointer">
@@ -140,12 +148,34 @@ const Table = () => {
                 <td className="px-6 py-4 cursor-pointer">
                   ${item.current_price}
                 </td>
-                <td className="px-6 py-4 cursor-pointer">+0.01%</td>
-                <td className="px-6 py-4 cursor-pointer">+0.01%</td>
-                <td className="px-6 py-4 cursor-pointer">+0.01%</td>
-                <td className="px-6 py-4 cursor-pointer">
-                  ${item.market_cap}
+                <td
+                  className={`px-6 py-4 cursor-pointer ${
+                    item.price_change_percentage_24h / 24 > 0
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {(item.price_change_percentage_24h / 24).toFixed(2)}%
                 </td>
+                <td
+                  className={`px-6 py-4 cursor-pointer ${
+                    item.price_change_percentage_24h > 0
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {item.price_change_percentage_24h.toFixed(2)}%
+                </td>
+                <td
+                  className={`px-6 py-4 cursor-pointer ${
+                    item.price_change_percentage_24h * 7 > 0
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {(item.price_change_percentage_24h * 7).toFixed(2)}%
+                </td>
+                <td className="px-6 py-4 cursor-pointer">${item.market_cap}</td>
                 <td className="px-6 py-4 cursor-pointer">
                   ${item.sparkline_in_7d.price[0]}
                 </td>
@@ -178,7 +208,9 @@ const Table = () => {
               <button
                 key={page}
                 className={`mr-2 px-3 py-1 border border-gray-300 rounded ${
-                  currentPage === page ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+                  currentPage === page
+                    ? "bg-blue-500 text-white"
+                    : "hover:bg-gray-100"
                 }`}
                 onClick={() => setCurrentPage(page)}
               >
