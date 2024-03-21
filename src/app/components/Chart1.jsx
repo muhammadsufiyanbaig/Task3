@@ -1,4 +1,3 @@
-'use client'
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
@@ -6,19 +5,23 @@ const Chart1 = ({ data }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    if (data && data.sparkline_in_7d) {
-      const ctx = chartRef.current;
+  
+      const prices = data.sparkline_in_7d.price;
+      const highestValue = data.price_change_percentage_24h;
+      const lineColor = highestValue > 0 ? '#00FF00' : '#FF0000';
+
+      const ctx = chartRef.current.getContext("2d");
       const chart = new Chart(ctx, {
-        type: "bar",
+        type: "line",
         data: {
-          // labels: Array.from({ length: data.sparkline_in_7d.length }, (_, i) => i),
+          labels: Array.from({ length: prices.length }, (_, i) => i),
           datasets: [
             {
               label: "Price",
-              data: data.sparkline_in_7d,
+              data: prices,
               fill: false,
-              borderColor: "rgb(75, 192, 192)",
-              
+              borderColor: lineColor,
+              tension: 0.001
             },
           ],
         },
@@ -27,7 +30,7 @@ const Chart1 = ({ data }) => {
       return () => {
         chart.destroy();
       };
-    }
+
   }, [data]);
 
   return <canvas ref={chartRef}></canvas>;

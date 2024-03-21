@@ -3,8 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Alldata from "./data.json";
 import { RiArrowDropDownFill } from "react-icons/ri";
-import Chart from "chart.js/auto";
-import Chart1 from './Chart1'
+import Chart1 from "./Chart1";
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -21,7 +20,7 @@ const Table = () => {
   const totalPages = Math.ceil(data.length / dataPerPage);
 
   const handleSortByPrice = () => {
-    const sortedData = [...data];
+    const sortedData = [...paginatedData];
     sortedData.sort((a, b) => {
       return sortOrder === "asc"
         ? a.current_price - b.current_price
@@ -33,7 +32,7 @@ const Table = () => {
   };
 
   const handleSortByMarketCap = () => {
-    const sortedData = [...data];
+    const sortedData = [...paginatedData];
     sortedData.sort((a, b) => {
       return sortOrder === "asc"
         ? a.market_cap - b.market_cap
@@ -43,8 +42,43 @@ const Table = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     setCurrentPage(1);
   };
+  const handleSortBy24hr = () => {
+    const sortedData = [...paginatedData];
+    sortedData.sort((a, b) => {
+      return sortOrder === "asc"
+        ? a.price_change_percentage_24h - b.price_change_percentage_24h
+        : b.price_change_percentage_24h - a.price_change_percentage_24h;
+    });
+    setData(sortedData);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    setCurrentPage(1);
+  };
+  const handleSortBy1hr = () => {
+    const sortedData = [...paginatedData];
+    sortedData.sort((a, b) => {
+      return sortOrder === "asc"
+        ? a.price_change_percentage_24h / 24 -
+            b.price_change_percentage_24h / 24
+        : b.price_change_percentage_24h / 24 -
+            a.price_change_percentage_24h / 24;
+    });
+    setData(sortedData);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    setCurrentPage(1);
+  };
+  const handleSortBy7days = () => {
+    const sortedData = [...paginatedData];
+    sortedData.sort((a, b) => {
+      return sortOrder === "asc"
+        ? a.price_change_percentage_24h * 7 - b.price_change_percentage_24h * 7
+        : b.price_change_percentage_24h * 7 - a.price_change_percentage_24h * 7;
+    });
+    setData(sortedData);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    setCurrentPage(1);
+  };
   const handleSortByCirculatingSupply = () => {
-    const sortedData = [...data];
+    const sortedData = [...paginatedData];
     sortedData.sort((a, b) => {
       return sortOrder === "asc"
         ? a.circulating_supply - b.circulating_supply
@@ -72,7 +106,6 @@ const Table = () => {
     setDataPerPage(perPage);
     setCurrentPage(1);
   };
- 
 
   return (
     <div>
@@ -93,13 +126,25 @@ const Table = () => {
               >
                 Price
               </th>
-              <th scope="col" className="px-6 py-3 cursor-pointer">
+              <th
+                onClick={handleSortBy1hr}
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+              >
                 1h%
               </th>
-              <th scope="col" className="px-6 py-3 cursor-pointer">
+              <th
+                onClick={handleSortBy24hr}
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+              >
                 24h%
               </th>
-              <th scope="col" className="px-6 py-3 cursor-pointer">
+              <th
+                onClick={handleSortBy7days}
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+              >
                 7d%
               </th>
               <th
@@ -186,8 +231,7 @@ const Table = () => {
                 </td>
                 <td className="px-6 py-4 cursor-pointer">
                   <div>
-                  <Chart1 data={item} />
-                
+                    <Chart1 data={item} />
                   </div>
                 </td>
               </tr>
