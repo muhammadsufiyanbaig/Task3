@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Alldata from "./data.json";
 import { RiArrowDropDownFill } from "react-icons/ri";
-
+import Chart from "chart.js/auto";
+import Chart1 from './Chart1'
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -71,6 +72,7 @@ const Table = () => {
     setDataPerPage(perPage);
     setCurrentPage(1);
   };
+ 
 
   return (
     <div>
@@ -182,7 +184,12 @@ const Table = () => {
                 <td className="px-6 py-4 cursor-pointer">
                   ${item.circulating_supply}
                 </td>
-                <td className="px-6 py-4 cursor-pointer">Chart</td>
+                <td className="px-6 py-4 cursor-pointer">
+                  <div>
+                  <Chart1 data={item} />
+                
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
